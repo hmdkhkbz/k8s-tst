@@ -1,0 +1,31 @@
+---
+- name: remove resolv.conf
+  file:
+    path: /etc/resolv.conf
+    state: absent
+
+- name: create resolv.conf with custom NS
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      nameserver 185.206.92.250
+      nameserver 185.231.181.206
+
+- name: remove cloudinit hosts conf
+  lineinfile:
+    path: /etc/cloud/templates/hosts.debian.tmpl
+    line: '   manage_etc_hosts: True'
+    state: absent
+
+- name: remove cloudinit cloud.cfg conf
+  lineinfile: 
+    path: /etc/cloud/cloud.cfg
+    line: '{{ item }}'
+  loop:
+    - 'preserve_hostname: false'
+    - '- set_hostname'
+    - '- update_hostname'
+    - '- update_etc_hosts'      
+ 
+- name: update apt cache
+  apt: update_cache=yes 

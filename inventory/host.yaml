@@ -1,0 +1,8 @@
+all:
+  children:
+    new-servers:
+      hosts:
+        new-server:
+          ansible_host: 188.121.117.250
+          ansible_user: root
+          ansible_port: 22

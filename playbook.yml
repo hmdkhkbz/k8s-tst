@@ -1,0 +1,7 @@
+---
+- hosts: new-servers 
+  become: true
+  gather_facts: yes
+  name: Configure new Server
+  roles:
+    - { role: prestage }
