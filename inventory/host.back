@@ -1,25 +1,2 @@
-all:
-  children:
-    new-servers:
-      hosts:
-        #HA:
-          ansible_host: 188.121.96.114
-          ansible_user: debian
-          ansible_port: 22
-          ansible_ssh_private_key_file: /root/ible/ary.pem
-        #w1:
-          ansible_host: 5.34.196.99
-          ansible_user: debian
-          ansible_port: 22
-          ansible_ssh_private_key_file: /root/ible/ary.pem
-        m2:
-          ansible_host: 5.34.197.124
-          ansible_user: debian
-          ansible_port: 22
-          ansible_ssh_private_key_file: /root/ible/ary.pem
-        m1:
-          ansible_host: 5.34.199.174
-          ansible_user: debian
-          ansible_port: 22
-          ansible_ssh_private_key_file: /root/ible/ary.pem
+
 
