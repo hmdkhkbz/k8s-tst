@@ -29,3 +29,15 @@
  
 - name: update apt cache
   apt: update_cache=yes 
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Add an entry for the hostname in /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "127.0.1.1 {{ inventory_hostname }}"
+    regexp: "^127.0.1.1 {{ inventory_hostname }}"
+    state: present
+

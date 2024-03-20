@@ -1,7 +1,18 @@
 ---
-- hosts: new-servers 
+- hosts: all
   become: true
   gather_facts: yes
   name: Configure new Server
   roles:
     - { role: prestage }
+
+- hosts: all:!HA
+  become: yes
+  roles:
+    - role: crio-setup
+      tags:
+        - crio-setup
+    - role: k8s-setup
+      tags:
+        - k8s-setup
+

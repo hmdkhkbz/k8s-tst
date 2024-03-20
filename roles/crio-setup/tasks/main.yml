@@ -1,0 +1,49 @@
+---
+- name: Ensure overlay and br_netfilter modules are loaded
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/crio.conf
+    content: |
+      overlay
+      br_netfilter
+  notify: reload sysctl
+
+- name: Load overlay and br_netfilter modules
+  ansible.builtin.modprobe:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - overlay
+    - br_netfilter
+
+- name: Add CRI-O repositories
+  ansible.builtin.lineinfile:
+    path: "/etc/apt/sources.list.d/devel:kubic:libcontainers:stable{{ '-' if item == crio_version else '' }}{{ item }}.list"
+    create: yes
+    line: "deb {{ crio_repo_url if item == 'stable' else crio_versioned_repo_url }} /"
+  loop:
+    - stable
+    - "{{ crio_version }}"
+
+- name: Import repository keys
+  ansible.builtin.shell:
+    cmd: "curl -L {{ crio_repo_url if item == 'stable' else crio_versioned_repo_url }}Release.key | apt-key add -"
+  loop:
+    - stable
+    - "{{ crio_version }}"
+  args:
+    warn: false
+
+- name: Update repositories and install CRI-O
+  ansible.builtin.apt:
+    update_cache: yes
+    name: 
+      - cri-o
+      - cri-o-runc
+    state: present
+
+- name: Ensure CRI-O service is started and enabled
+  ansible.builtin.systemd:
+    name: crio.service
+    state: started
+    enabled: yes
+

@@ -1,0 +1,5 @@
+---
+crio_version: "1.20"
+debian_version: "Debian_11"
+crio_repo_url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ debian_version }}/"
+crio_versioned_repo_url: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ debian_version }}/"
